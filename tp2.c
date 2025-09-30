@@ -39,3 +39,76 @@ int lireEntier(const char* message, int min, int max) {
         }
     } while (1);
 }
+
+Liste init(){
+    return NULL;
+}
+
+Liste last(Liste t){
+    Liste l=t;
+    if(l==NULL){
+        printf("Liste vide");
+        return NULL;
+    }else{
+        while(l->next!=NULL){
+            l = l->next;
+        }
+    }
+    return l;
+}
+
+Liste inserthead(Liste t, int v){
+    Liste l = (Liste) malloc (sizeof(Liste));
+    l->val = v;
+    l->next = t;
+    t=l;
+    return t;
+}
+
+Liste insertbottom(Liste t, int v){
+    if(t==NULL){
+        t=inserthead(t,v);
+        return t;
+    }
+    Liste l;
+    l=last(t);
+    l->next= (Liste) malloc (sizeof(Liste));
+    l->next->next = NULL;
+    l->next->val = v;
+    return t;
+}
+
+Liste deletehead(Liste t){
+    if(t==NULL){
+        printf("Liste vide");
+        return t;
+    }else{
+        t=t->next;
+        return t;
+    }
+}
+
+Liste deletebottom(Liste t){
+    Liste l = t;
+    if(t==NULL){
+        printf("Liste vide");
+        return t;
+    }else if(l->next==NULL){
+        free(l);
+        l=NULL;
+        return l;
+    }else{
+        l=last(t)->prev;
+        free(l->next);
+        l->next=NULL;
+        return t;
+    }
+}
+
+Liste sortascending(Liste t){
+    
+}
+
+Liste sortdescending(Liste t){
+    
+}
