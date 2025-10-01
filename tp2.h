@@ -2,21 +2,34 @@
 #define _TP2_
 
 
-typedef struct Liste{
-    struct Liste *prev;
+typedef struct ListeSChainee{
     int val;
-    struct Liste *next;
-}*Liste;
+    struct ListeSChainee *next;
+}*ListeSChainee;
+typedef struct ListeSChaineeC{
+    int indice;
+    int val;
+    struct ListeSChaineeC *next;
+}*ListeSChaineeC;
+typedef struct ListeDChainee{
+    struct ListeDChainee *prev;
+    int val;
+    struct ListeDChainee *next;
+}*ListeDChainee;
+typedef struct ListeDChaineeC{
+    int indice;
+    struct ListeDChaineeC *prev;
+    int val;
+    struct ListeDChaineeC *next;
+}*ListeDChaineeC;
 int lireEntier(const char* message, int min, int max);
-int LireMot(const char* message, char* chaine, size_t tailleChaine);
-Liste init();
-Liste last(Liste t);
-Liste inserthead(Liste t, int v);
-Liste insertbottom(Liste t, int v);
-Liste deletehead(Liste t);
-Liste deletebottom(Liste t);
-Liste sortascending(Liste t);
-Liste sortdescending(Liste t);
+ListeSChainee last(ListeSChainee t);
+ListeSChainee ajoutElementSC(ListeSChainee t);
+ListeSChainee suppOccurenceSC(ListeSChainee t);
+void affichage(ListeSChainee t);
+void affichageC(ListeSChaineeC t);
+ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t);
+ListeSChaineeC ajoutQueueSCC(ListeSChaineeC t);
 
 
 #endif
