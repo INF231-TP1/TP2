@@ -40,6 +40,44 @@ int lireEntier(const char* message, int min, int max) {
     } while (1);
 }
 
+int LireMot(const char* message, char* chaine, size_t tailleChaine){
+    char buffer[100];
+    char *retourFgets;
+    if(chaine==NULL || tailleChaine==0){
+        return 0;
+    }
+    do{
+        printf("%s",message);
+        retourFgets = fgets(buffer, sizeof(buffer), stdin);
+        if(retourFgets == NULL){
+            printf("Erreur de lecture ou fin de fichier atteinte.\n");
+            return 0;
+        }
+        buffer[strcspn(buffer,'\n')]='\0';
+        if(buffer[0] == '\0'){
+            printf("Erreur : La cahine ne peut pas etre vide.\n");
+            continue;
+        }
+        char *pointeurEspace = strchr(buffer,' ');
+        if(pointeurEspace != NULL){
+            printf("Erreur : Les espaces ne sont pas autorises.\n");
+            continue;
+        }
+        if(strlen(buffer) >= sizeof(buffer)-1){
+            int caractere;
+            printf("Attention : L'entree a ete tronquee. Vidage du tampon...\n");
+            while((caractere=getchar()) != '\n' && caractere != EOF);
+            continue;
+        }
+        if(strlen(buffer) >= tailleChaine){
+            printf("Erreur : La chaine saisie est trop longue pour l'espace prevu.\n");
+            continue;
+        }
+        strcpy(chaine, buffer);
+        return 1;
+    }while(1);
+}
+
 Liste init(){
     return NULL;
 }
@@ -60,6 +98,7 @@ Liste last(Liste t){
 Liste inserthead(Liste t, int v){
     Liste l = (Liste) malloc (sizeof(Liste));
     l->val = v;
+    l->prev = NULL;
     l->next = t;
     t=l;
     return t;
@@ -70,9 +109,11 @@ Liste insertbottom(Liste t, int v){
         t=inserthead(t,v);
         return t;
     }
-    Liste l;
+    Liste l,m;
     l=last(t);
+    m=last(t);
     l->next= (Liste) malloc (sizeof(Liste));
+    l->next->prev = m;
     l->next->next = NULL;
     l->next->val = v;
     return t;
@@ -83,7 +124,9 @@ Liste deletehead(Liste t){
         printf("Liste vide");
         return t;
     }else{
+        Liste m=t;
         t=t->next;
+        free(m);
         return t;
     }
 }
