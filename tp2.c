@@ -40,50 +40,8 @@ int lireEntier(const char* message, int min, int max) {
     } while (1);
 }
 
-int LireMot(const char* message, char* chaine, size_t tailleChaine){
-    char buffer[100];
-    char *retourFgets;
-    if(chaine==NULL || tailleChaine==0){
-        return 0;
-    }
-    do{
-        printf("%s",message);
-        retourFgets = fgets(buffer, sizeof(buffer), stdin);
-        if(retourFgets == NULL){
-            printf("Erreur de lecture ou fin de fichier atteinte.\n");
-            return 0;
-        }
-        buffer[strcspn(buffer,'\n')]='\0';
-        if(buffer[0] == '\0'){
-            printf("Erreur : La cahine ne peut pas etre vide.\n");
-            continue;
-        }
-        char *pointeurEspace = strchr(buffer,' ');
-        if(pointeurEspace != NULL){
-            printf("Erreur : Les espaces ne sont pas autorises.\n");
-            continue;
-        }
-        if(strlen(buffer) >= sizeof(buffer)-1){
-            int caractere;
-            printf("Attention : L'entree a ete tronquee. Vidage du tampon...\n");
-            while((caractere=getchar()) != '\n' && caractere != EOF);
-            continue;
-        }
-        if(strlen(buffer) >= tailleChaine){
-            printf("Erreur : La chaine saisie est trop longue pour l'espace prevu.\n");
-            continue;
-        }
-        strcpy(chaine, buffer);
-        return 1;
-    }while(1);
-}
-
-Liste init(){
-    return NULL;
-}
-
-Liste last(Liste t){
-    Liste l=t;
+ListeSChainee last(ListeSChainee t){
+    ListeSChainee l=t;
     if(l==NULL){
         printf("Liste vide");
         return NULL;
@@ -95,63 +53,120 @@ Liste last(Liste t){
     return l;
 }
 
-Liste inserthead(Liste t, int v){
-    Liste l = (Liste) malloc (sizeof(Liste));
-    l->val = v;
-    l->prev = NULL;
-    l->next = t;
-    t=l;
+ListeSChainee ajoutElementSC(ListeSChainee t){
+    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
+    ListeSChainee l = t;
+    ListeSChainee m = (ListeSChainee) malloc (sizeof(ListeSChainee));
+    if(l == NULL) {
+        m->val = v;
+        m->next = NULL;
+        return m;
+    }
+    while(l->next != NULL && l->next->val < v){
+        if(l->next->next == NULL || l->next->next->val > v){
+            m->val = v;
+            m->next = l->next->next;
+            l->next->next = m;
+            return t;
+        }
+        l = l->next;
+    }
+    m->val = v;
+    m->next = l;
+    return m;
+}
+
+ListeSChainee suppOccurenceSC(ListeSChainee t){
+    int v = lireEntier("Entrez l'entier à supprimer", 0, MAX);
+    ListeSChainee l = t, m;
+    while(l != NULL){
+        if(l->val == v){
+            m = l;
+            l = l->next;
+            free(m);
+            continue;
+        }
+        l = l->next;
+    }
+    printf("Opérations effectuées avec succes !");
     return t;
 }
 
-Liste insertbottom(Liste t, int v){
-    if(t==NULL){
-        t=inserthead(t,v);
-        return t;
+void affichage(ListeSChainee t){
+	ListeSChainee l=t;
+	if(l==NULL){
+		printf("Liste vide\n");
+	}else{
+		while(l!=NULL){
+			printf("\"%d\"  ",l->val);
+			l = l->next;         
+		}
+	}
+}
+
+void affichageC(ListeSChaineeC t){
+	ListeSChaineeC l=t;
+	if(l==NULL){
+		printf("Liste vide\n");
+	}else{
+		while(l->indice > l->next->indice){
+			printf("\"%d\"  ",l->val);
+			l = l->next;
+		}
+        printf("\"%d\" ",l->val);
+	}
+}
+
+ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t){
+    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
+    ListeSChaineeC l = t;
+    ListeSChaineeC m = (ListeSChaineeC) malloc (sizeof(ListeSChaineeC));
+    if(l == NULL){
+        m->indice = 1;
+        m->val = v;
+        m->next = m;
+        return m;
     }
-    Liste l,m;
-    l=last(t);
-    m=last(t);
-    l->next= (Liste) malloc (sizeof(Liste));
-    l->next->prev = m;
-    l->next->next = NULL;
-    l->next->val = v;
+    while(l->indice > l->next->indice){
+        if(l->next->indice < l->next->next->indice){
+            m->indice = l->next->next->indice + 1;
+            m->val = v;
+            m->next = l->next->next;
+            l->next->next = m;
+            return t;
+        }
+        l = l->next;
+    }
+    m->indice = 2;
+    m->val = v;
+    m->next = l;
+    l->next = m;
     return t;
 }
 
-Liste deletehead(Liste t){
-    if(t==NULL){
-        printf("Liste vide");
-        return t;
-    }else{
-        Liste m=t;
-        t=t->next;
-        free(m);
-        return t;
+ListeSChaineeC ajoutQueueSCC(ListeSChaineeC t){
+    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
+    ListeSChaineeC l = t;
+    ListeSChaineeC m = (ListeSChaineeC) malloc (sizeof(ListeSChaineeC));
+    if(l == NULL){
+        m->indice = 1;
+        m->val = v;
+        m->next = m;
+        return m;
     }
-}
-
-Liste deletebottom(Liste t){
-    Liste l = t;
-    if(t==NULL){
-        printf("Liste vide");
-        return t;
-    }else if(l->next==NULL){
-        free(l);
-        l=NULL;
-        return l;
-    }else{
-        l=last(t)->prev;
-        free(l->next);
-        l->next=NULL;
-        return t;
+    while(l->indice > l->next->indice){
+        if(l->next->indice < l->next->next->indice){
+            m->indice = l->next->indice - 1;
+            m->val = v;
+            m->next = l->next->next;
+            l->next->next = m;
+            return t;
+        }
+        l = l->next;
     }
-}
-
-Liste sortascending(Liste t){
-    
-}
-
-Liste sortdescending(Liste t){
-    
+    m->indice = 0;
+    m->val = v;
+    m->next = l;
+    l->next = m;
+    return t;
 }
