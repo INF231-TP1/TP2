@@ -4,11 +4,11 @@
 Ce programme C implémente diverses opérations sur les listes chaînées. Il a été développé dans le cadre du cours STRUCTURE DE DONNÉES II (INF 231_EC2) à l'Université de Yaoundé I.
 
 ## Fonctions implémentées
-1. Lecture d'un élément et suppression de toutes les occurrences d'une liste chaînée simple
-2. Insertion d'un élément dans une liste chaînée simple triée
-3. Insertion d'un élément dans une liste chaînée double triée
-4. Insertion en début et en fin d'une liste chaînée simple circulaire
-5. Insertion en début et en fin d'une liste chaînée double circulaire
+1. Lire un élément et supprimer toutes les occurences dans une liste simplement chaînée
+2. Insertion d'un élément dans une liste simplement chaînée triée
+3. Insertion d'un élément dans une liste doublement chaînée triée
+4. Insertion en tête et en queue dans une liste simplement chaînée circulaire
+5. Insertion en tête et en queue dans une liste doublement chaînée circulaire
 
 ## Structure du projet
 - `main.c` : Programme principal avec menu interactif
