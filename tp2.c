@@ -40,19 +40,6 @@ int lireEntier(const char* message, int min, int max) {
     } while (1);
 }
 
-ListeSChainee last(ListeSChainee t){
-    ListeSChainee l=t;
-    if(l==NULL){
-        printf("Liste vide");
-        return NULL;
-    }else{
-        while(l->next!=NULL){
-            l = l->next;
-        }
-    }
-    return l;
-}
-
 ListeSChainee ajoutElementSC(ListeSChainee t){
     int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
     ListeSChainee l = t;
@@ -76,6 +63,32 @@ ListeSChainee ajoutElementSC(ListeSChainee t){
     return m;
 }
 
+ListeDChainee ajoutElementDC(ListeDChainee t){
+    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
+    ListeDChainee l = t;
+    ListeDChainee m = (ListeDChainee) malloc (sizeof(ListeDChainee));
+    if(l == NULL) {
+        m->prev = NULL;
+        m->val = v;
+        m->next = NULL;
+        return m;
+    }
+    while(l->next != NULL && l->next->val < v){
+        if(l->next->next == NULL || l->next->next->val > v){
+            m->prev = l->next;
+            m->val = v;
+            m->next = l->next->next;
+            l->next->next = m;
+            return t;
+        }
+        l = l->next;
+    }
+    m->prev = NULL;
+    m->val = v;
+    m->next = l;
+    return m;
+}
+
 ListeSChainee suppOccurenceSC(ListeSChainee t){
     int v = lireEntier("Entrez l'entier à supprimer", 0, MAX);
     ListeSChainee l = t, m;
@@ -92,7 +105,23 @@ ListeSChainee suppOccurenceSC(ListeSChainee t){
     return t;
 }
 
-void affichage(ListeSChainee t){
+ListeDChainee suppOccurenceDC(ListeDChainee t){
+    int v = lireEntier("Entrez l'entier à supprimer", 0, MAX);
+    ListeDChainee l = t, m;
+    while(l != NULL){
+        if(l->val == v){
+            m = l;
+            l = l->next;
+            free(m);
+            continue;
+        }
+        l = l->next;
+    }
+    printf("Opérations effectuées avec succes !");
+    return t;
+}
+
+void affichageSC(ListeSChainee t){
 	ListeSChainee l=t;
 	if(l==NULL){
 		printf("Liste vide\n");
@@ -104,7 +133,19 @@ void affichage(ListeSChainee t){
 	}
 }
 
-void affichageC(ListeSChaineeC t){
+void affichageDC(ListeDChainee t){
+	ListeDChainee l=t;
+	if(l==NULL){
+		printf("Liste vide\n");
+	}else{
+		while(l!=NULL){
+			printf("\"%d\"  ",l->val);
+			l = l->next;         
+		}
+	}
+}
+
+void affichageSCC(ListeSChaineeC t){
 	ListeSChaineeC l=t;
 	if(l==NULL){
 		printf("Liste vide\n");

@@ -48,7 +48,7 @@ int main() {
                     switch(n) {
                         case '1': t1 = ajoutElementSC(t1); break;
                         case '2': t1 = suppOccurenceSC(t1); break;
-                        case '3': affichage(t1); break;
+                        case '3': affichageSC(t1); break;
                         case '0': printf("Au Revoir !\n"); break;
                         default: printf("Erreur ! Veuillez choisir une option valable.\n");
                     }
@@ -75,7 +75,7 @@ int main() {
                     switch(n) {
                         case '1': t2 = ajoutTeteSCC(t2); break;
                         case '2': t2 = ajoutQueueSCC(t2); break;
-                        case '3': affichageC(t2); break;
+                        case '3': affichageSCC(t2); break;
                         case '0': printf("Au Revoir !\n"); break;
                         default: printf("Erreur ! Veuillez choisir une option valable.\n");
                     }
@@ -83,8 +83,60 @@ int main() {
                 } while(n != '0');
             break;
 
-            case '3': ; break;
-            case '4': ; break;
+            case '3':
+                do {
+                    printf("0- Quitter\n1- Ajouter un élément dans la liste\n2- Lire un élément et supprimer toutes les occurences dans la liste\n3- Afficher la liste\n");
+                    printf("Entrez le chiffre correspondant à votre choix : ");
+        
+                    if (fgets(input, sizeof(input), stdin) == NULL) {
+                        break;
+                    }
+        
+                    if (strlen(input) > 2 || (strlen(input) == 1 && input[0] == '\n')) {
+                        printf("Erreur ! Veuillez entrer un seul caractère.\n");
+                        continue;
+                    }
+        
+                    n = input[0];
+                        
+                    switch(n) {
+                        case '1': t3 = ajoutElementDC(t3); break;
+                        case '2': t3 = suppOccurenceDC(t3); break;
+                        case '3': affichageDC(t3); break;
+                        case '0': printf("Au Revoir !\n"); break;
+                        default: printf("Erreur ! Veuillez choisir une option valable.\n");
+                    }
+                    printf("\n");
+                } while(n != '0');
+            break;
+            
+            case '4':
+                do {
+                    printf("0- Quitter\n1- Ajouter un élément en tête de la liste\n2- Ajouter un élément en queue de la liste\n3- Afficher la liste\n");
+                    printf("Entrez le chiffre correspondant à votre choix : ");
+        
+                    if (fgets(input, sizeof(input), stdin) == NULL) {
+                        break;
+                    }
+        
+                    if (strlen(input) > 2 || (strlen(input) == 1 && input[0] == '\n')) {
+                        printf("Erreur ! Veuillez entrer un seul caractère.\n");
+                        continue;
+                    }
+        
+                    n = input[0];
+                        
+                    switch(n) {
+                        case '1': t4 = ajoutTeteDCC(t4); break;
+                        case '2': t4 = ajoutQueueDCC(t4); break;
+                        case '3': affichageDCC(t4); break;
+                        case '0': printf("Au Revoir !\n"); break;
+                        default: printf("Erreur ! Veuillez choisir une option valable.\n");
+                    }
+                    printf("\n");
+                } while(n != '0');
+            break;
+
             case '0': printf("Au Revoir !\n"); break;
             default: printf("Erreur ! Veuillez choisir une option valable.\n");
         }
