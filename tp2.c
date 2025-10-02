@@ -41,248 +41,261 @@ int lireEntier(const char* message, int min, int max) {
 }
 
 ListeSChainee ajoutElementSC(ListeSChainee t){
-    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
-    ListeSChainee l = t;
-    ListeSChainee m = (ListeSChainee) malloc (sizeof(ListeSChainee));
-    if(l == NULL) {
-        m->val = v;
-        m->next = NULL;
-        return m;
+    int v = lireEntier("Entrez l'entier à ajouter: ", 0, MAX);
+    ListeSChainee nouveau = (ListeSChainee) malloc(sizeof(ListeSChainee));
+    if (nouveau == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        return t;
     }
-    while(l->next != NULL && l->next->val < v){
-        if(l->next->next == NULL || l->next->next->val > v){
-            m->val = v;
-            m->next = l->next->next;
-            l->next->next = m;
-            return t;
-        }
-        l = l->next;
+    nouveau->val = v;
+    nouveau->next = NULL;
+    if (t == NULL) {
+        return nouveau;
     }
-    m->val = v;
-    m->next = l;
-    return m;
+    if (t->val >= v) {
+        nouveau->next = t;
+        return nouveau;
+    }
+    ListeSChainee courant = t;
+    while (courant->next != NULL && courant->next->val < v) {
+        courant = courant->next;
+    }
+    nouveau->next = courant->next;
+    courant->next = nouveau;
+    return t;
 }
 
 ListeDChainee ajoutElementDC(ListeDChainee t){
-    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
-    ListeDChainee l = t;
-    ListeDChainee m = (ListeDChainee) malloc (sizeof(ListeDChainee));
-    if(l == NULL) {
-        m->prev = NULL;
-        m->val = v;
-        m->next = NULL;
-        return m;
+    int v = lireEntier("Entrez l'entier à ajouter: ", 0, MAX);
+    ListeDChainee nouveau = (ListeDChainee) malloc(sizeof(ListeDChainee));
+    if (nouveau == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        return t;
     }
-    while(l->next != NULL && l->next->val < v){
-        if(l->next->next == NULL || l->next->next->val > v){
-            m->prev = l->next;
-            m->val = v;
-            m->next = l->next->next;
-            l->next->next = m;
-            return t;
-        }
-        l = l->next;
+    nouveau->val = v;
+    nouveau->prev = NULL;
+    nouveau->next = NULL;
+    if (t == NULL) {
+        return nouveau;
     }
-    m->prev = NULL;
-    m->val = v;
-    m->next = l;
-    return m;
+    if (t->val >= v) {
+        nouveau->next = t;
+        t->prev = nouveau;
+        return nouveau;
+    }
+    ListeDChainee courant = t;
+    while (courant->next != NULL && courant->next->val < v) {
+        courant = courant->next;
+    }
+    nouveau->next = courant->next;
+    nouveau->prev = courant;
+        if (courant->next != NULL) {
+        courant->next->prev = nouveau;
+    }
+    courant->next = nouveau;
+    return t;
 }
 
 ListeSChainee suppOccurenceSC(ListeSChainee t){
-    int v = lireEntier("Entrez l'entier à supprimer", 0, MAX);
-    ListeSChainee l = t, m;
-    while(l != NULL){
-        if(l->val == v){
-            m = l;
-            l = l->next;
-            free(m);
-            continue;
+    int v = lireEntier("Entrez l'entier à supprimer: ", 0, MAX);
+    ListeSChainee courant = t;
+    ListeSChainee precedent = NULL;
+    ListeSChainee aSupprimer;
+    int suppressions = 0;
+    while (courant != NULL) {
+        if (courant->val == v) {
+            aSupprimer = courant;
+            if (precedent == NULL) {
+                t = courant->next;
+            } else {
+                precedent->next = courant->next;
+            }
+            courant = courant->next;
+            free(aSupprimer);
+            suppressions++;
+        } else {
+            precedent = courant;
+            courant = courant->next;
         }
-        l = l->next;
     }
-    printf("Opérations effectuées avec succes !");
+    if (suppressions > 0) {
+        printf("%d occurrence(s) supprimée(s) avec succès !\n", suppressions);
+    } else {
+        printf("Aucune occurrence trouvée.\n");
+    }
     return t;
 }
 
 ListeDChainee suppOccurenceDC(ListeDChainee t){
-    int v = lireEntier("Entrez l'entier à supprimer", 0, MAX);
-    ListeDChainee l = t, m;
-    while(l != NULL){
-        if(l->val == v){
-            m = l;
-            l = l->next;
-            free(m);
-            continue;
+    int v = lireEntier("Entrez l'entier à supprimer: ", 0, MAX);
+    ListeDChainee courant = t;
+    ListeDChainee aSupprimer;
+    int suppressions = 0;
+    while (courant != NULL) {
+        if (courant->val == v) {
+            aSupprimer = courant;
+            if (courant->prev == NULL) {
+                t = courant->next;
+                if (t != NULL) {
+                    t->prev = NULL;
+                }
+            } else {
+                courant->prev->next = courant->next;
+            }
+            if (courant->next != NULL) {
+                courant->next->prev = courant->prev;
+            }
+            courant = courant->next;
+            free(aSupprimer);
+            suppressions++;
+        } else {
+            courant = courant->next;
         }
-        l = l->next;
     }
-    printf("Opérations effectuées avec succes !");
+    if (suppressions > 0) {
+        printf("%d occurrence(s) supprimée(s) avec succès !\n", suppressions);
+    } else {
+        printf("Aucune occurrence trouvée.\n");
+    }
     return t;
 }
 
 void affichageSC(ListeSChainee t){
-	ListeSChainee l=t;
-	if(l==NULL){
-		printf("Liste vide\n");
-	}else{
-		while(l!=NULL){
-			printf("\"%d\"  ",l->val);
-			l = l->next;         
-		}
-	}
+    ListeSChainee l = t;
+    if (l == NULL) {
+        printf("Liste vide\n");
+    } else {
+        while (l != NULL) {
+            printf("\"%d\"  ", l->val);
+            l = l->next;         
+        }
+        printf("\n");
+    }
 }
 
 void affichageDC(ListeDChainee t){
-	ListeDChainee l=t;
-	if(l==NULL){
-		printf("Liste vide\n");
-	}else{
-		while(l!=NULL){
-			printf("\"%d\"  ",l->val);
-			l = l->next;         
-		}
-	}
+    ListeDChainee l = t;
+    if (l == NULL) {
+        printf("Liste vide\n");
+    } else {
+        while (l != NULL) {
+            printf("\"%d\"  ", l->val);
+            l = l->next;         
+        }
+        printf("\n");
+    }
 }
 
-void affichageSCC(ListeSChaineeC t){
-	ListeSChaineeC l=t;
-	if(l==NULL){
-		printf("Liste vide\n");
-	}else{
-		while(l->indice > l->next->indice){
-			printf("\"%d\"  ",l->val);
-			l = l->next;
-		}
-        printf("\"%d\" ",l->val);
-	}
+void affichageSCC(ListeSChainee t){
+    if (t == NULL) {
+        printf("Liste vide\n");
+        return;
+    }
+    ListeSChainee l = t;
+    printf("\"%d\"  ", l->val);
+    l = l->next;
+    while (l != t) {
+        printf("\"%d\"  ", l->val);
+        l = l->next;
+    }
+    printf("\n");
 }
 
-void affichageDCC(ListeDChaineeC t){
-	ListeDChaineeC l=t;
-	if(l==NULL){
-		printf("Liste vide\n");
-	}else{
-		while(l->indice > l->next->indice){
-			printf("\"%d\"  ",l->val);
-			l = l->next;
-		}
-        printf("\"%d\" ",l->val);
-	}
+void affichageDCC(ListeDChainee t){
+    if (t == NULL) {
+        printf("Liste vide\n");
+        return;
+    }
+    ListeDChainee l = t;
+    printf("\"%d\"  ", l->val);
+    l = l->next;
+    while (l != t) {
+        printf("\"%d\"  ", l->val);
+        l = l->next;
+    }
+    printf("\n");
 }
 
-ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t){
-    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
-    ListeSChaineeC l = t;
-    ListeSChaineeC m = (ListeSChaineeC) malloc (sizeof(ListeSChaineeC));
-    if(l == NULL){
-        m->indice = 1;
-        m->val = v;
+ListeSChainee ajoutTeteSCC(ListeSChainee t){
+    int v = lireEntier("Entrez l'entier à ajouter: ", 0, MAX);
+    ListeSChainee m = (ListeSChainee) malloc (sizeof(ListeSChainee));
+    if(m == NULL){
+        printf("Erreur d'allocation de mémoire\n");
+        return t;
+    }
+    m->val = v;
+    if(t == NULL){
         m->next = m;
         return m;
     }
-    while(l->indice > l->next->indice){
-        if(l->next->indice < l->next->next->indice){
-            ListeSChaineeC p = l->next->next;
-            m->indice = l->next->next->indice + 1;
-            m->val = v;
-            l->next->next = m;
-            m->next = p;
-            return t;
-        }
-        l = l->next;
+    ListeSChainee last = t;
+    while(last->next != t){
+        last = last->next;
     }
-    m->indice = 2;
+    m->next = t;    
+    last->next = m;
+    return m;
+}
+
+ListeSChainee ajoutQueueSCC(ListeSChainee t){
+    int v = lireEntier("Entrez l'entier à ajouter: ", 0, MAX);
+    ListeSChainee m = (ListeSChainee) malloc (sizeof(ListeSChainee));
+    if(m == NULL){
+        printf("Erreur d'allocation de mémoire\n");
+        return t;
+    }
     m->val = v;
-    m->next = l;
-    l->next = m;
+    if(t == NULL){
+        m->next = m;
+        return m;
+    }
+    ListeSChainee last = t;
+    while (last->next != t) {
+        last = last->next;
+    }
+    m->next = t;
+    last->next = m;
     return t;
 }
 
-ListeDChaineeC ajoutTeteDCC(ListeDChaineeC t){
-    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
-    ListeDChaineeC l = t;
-    ListeDChaineeC m = (ListeDChaineeC) malloc (sizeof(ListeDChaineeC));
-    if(l == NULL){
-        m->indice = 1;
-        m->prev = NULL;
-        m->val = v;
+ListeDChainee ajoutTeteDCC(ListeDChainee t){
+    int v = lireEntier("Entrez l'entier à ajouter: ", 0, MAX);
+    ListeDChainee m = (ListeDChainee) malloc (sizeof(ListeDChainee));
+    if(m == NULL){
+        printf("Erreur d'allocation de mémoire\n");
+        return t;
+    }
+    m->val = v;
+    if(t == NULL){
         m->next = m;
+        m->prev = m;
         return m;
     }
-    while(l->indice > l->next->indice){
-        if(l->next->indice < l->next->next->indice){
-            ListeDChaineeC p = l->next->next;
-            m->indice = l->next->next->indice + 1;
-            m->val = v;
-            l->next->next = m;
-            p->prev = m;
-            m->prev = l->next;
-            m->next = p;
-            return t;
-        }
-        l = l->next;
-    }
-    m->indice = 2;
-    m->val = v;
-    m->next = l;
-    l->next = m;
-    return t;
+    ListeDChainee last = t->prev;
+    m->next = t;
+    m->prev = last;
+    t->prev = m;
+    last->next = m;
+    return m;
 }
 
-ListeSChaineeC ajoutQueueSCC(ListeSChaineeC t){
-    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
-    ListeSChaineeC l = t;
-    ListeSChaineeC m = (ListeSChaineeC) malloc (sizeof(ListeSChaineeC));
-    if(l == NULL){
-        m->indice = 1;
-        m->val = v;
+ListeDChainee ajoutQueueDCC(ListeDChainee t){
+    int v = lireEntier("Entrez l'entier à ajouter: ", 0, MAX);
+    ListeDChainee m = (ListeDChainee) malloc (sizeof(ListeDChainee));
+    if(m == NULL){
+        printf("Erreur d'allocation de mémoire\n");
+        return t;
+    }
+    m->val = v;
+    if(t == NULL){
         m->next = m;
+        m->prev = m;
         return m;
     }
-    while(l->indice > l->next->indice){
-        if(l->next->indice < l->next->next->indice){
-            m->indice = l->next->indice - 1;
-            m->val = v;
-            m->next = l->next->next;
-            l->next->next = m;
-            return t;
-        }
-        l = l->next;
-    }
-    m->indice = 0;
-    m->val = v;
-    m->next = l;
-    l->next = m;
-    return t;
-}
-
-ListeDChaineeC ajoutQueueDCC(ListeDChaineeC t){
-    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
-    ListeDChaineeC l = t;
-    ListeDChaineeC m = (ListeDChaineeC) malloc (sizeof(ListeDChaineeC));
-    if(l == NULL){
-        m->indice = 1;
-        m->val = v;
-        m->prev = NULL;
-        m->next = m;
-        return m;
-    }
-    while(l->indice > l->next->indice){
-        if(l->next->indice < l->next->next->indice){
-            m->indice = l->next->indice - 1;
-            m->val = v;
-            l->next->next->prev = m;
-            m->prev = l->next;
-            m->next = l->next->next;
-            l->next->next = m;
-            return t;
-        }
-        l = l->next;
-    }
-    m->indice = 0;
-    m->val = v;
-    m->next = l;
-    l->next = m;
+    ListeDChainee last = t->prev;
+    m->next = t;
+    m->prev = last;
+    last->next = m;
+    t->prev = m;
     return t;
 }
