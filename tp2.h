@@ -23,11 +23,10 @@ typedef struct ListeDChaineeC{
     struct ListeDChaineeC *next;
 }*ListeDChaineeC;
 int lireEntier(const char* message, int min, int max);
-ListeSChainee last(ListeSChainee t);
 ListeSChainee ajoutElementSC(ListeSChainee t);
 ListeSChainee suppOccurenceSC(ListeSChainee t);
-void affichage(ListeSChainee t);
-void affichageC(ListeSChaineeC t);
+void affichageSC(ListeSChainee t);
+void affichageSCC(ListeSChaineeC t);
 ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t);
 ListeSChaineeC ajoutQueueSCC(ListeSChaineeC t);
 
