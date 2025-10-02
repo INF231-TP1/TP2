@@ -1,6 +1,7 @@
 #ifndef _TP2_
 #define _TP2_
 
+
 typedef struct ListeSChainee{
     int val;
     struct ListeSChainee *next;
@@ -23,5 +24,6 @@ ListeSChainee ajoutTeteSCC(ListeSChainee t);
 ListeDChainee ajoutTeteDCC(ListeDChainee t);
 ListeSChainee ajoutQueueSCC(ListeSChainee t);
 ListeDChainee ajoutQueueDCC(ListeDChainee t);
+
 
 #endif

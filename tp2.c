@@ -8,6 +8,7 @@
 
 #define MAX 100
 
+
 int lireEntier(const char* message, int min, int max) {
     char buffer[100];
     long valeurLong;
