@@ -8,9 +8,7 @@ int main() {
     char input[100];
     char n;
     ListeSChainee t1 = NULL;
-    ListeSChaineeC t2 = NULL;
-    ListeDChainee t3 = NULL;
-    ListeDChaineeC t4 = NULL;
+    ListeDChainee t2 = NULL;
     
     do {
         printf("0- Quitter\n1- Effectuez des opérations dans une liste simplement chaînée non circulaire\n2- Effectuez des opérations dans une liste simplement chaînée circulaire\n3- Effectuez des opérations dans une liste doublement chaînée non circulaire\n4- Effectuez des opérations dans une liste doublement chaînée circulaire\n");
@@ -73,9 +71,9 @@ int main() {
                     n = input[0];
                         
                     switch(n) {
-                        case '1': t2 = ajoutTeteSCC(t2); break;
-                        case '2': t2 = ajoutQueueSCC(t2); break;
-                        case '3': affichageSCC(t2); break;
+                        case '1': t1 = ajoutTeteSCC(t1); break;
+                        case '2': t1 = ajoutQueueSCC(t1); break;
+                        case '3': affichageSCC(t1); break;
                         case '0': printf("Au Revoir !\n"); break;
                         default: printf("Erreur ! Veuillez choisir une option valable.\n");
                     }
@@ -100,9 +98,9 @@ int main() {
                     n = input[0];
                         
                     switch(n) {
-                        case '1': t3 = ajoutElementDC(t3); break;
-                        case '2': t3 = suppOccurenceDC(t3); break;
-                        case '3': affichageDC(t3); break;
+                        case '1': t2 = ajoutElementDC(t2); break;
+                        case '2': t2 = suppOccurenceDC(t2); break;
+                        case '3': affichageDC(t2); break;
                         case '0': printf("Au Revoir !\n"); break;
                         default: printf("Erreur ! Veuillez choisir une option valable.\n");
                     }
@@ -127,9 +125,9 @@ int main() {
                     n = input[0];
                         
                     switch(n) {
-                        case '1': t4 = ajoutTeteDCC(t4); break;
-                        case '2': t4 = ajoutQueueDCC(t4); break;
-                        case '3': affichageDCC(t4); break;
+                        case '1': t2 = ajoutTeteDCC(t2); break;
+                        case '2': t2 = ajoutQueueDCC(t2); break;
+                        case '3': affichageDCC(t2); break;
                         case '0': printf("Au Revoir !\n"); break;
                         default: printf("Erreur ! Veuillez choisir une option valable.\n");
                     }
