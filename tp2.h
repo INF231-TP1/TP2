@@ -24,11 +24,17 @@ typedef struct ListeDChaineeC{
 }*ListeDChaineeC;
 int lireEntier(const char* message, int min, int max);
 ListeSChainee ajoutElementSC(ListeSChainee t);
+ListeDChainee ajoutElementDC(ListeDChainee t);
 ListeSChainee suppOccurenceSC(ListeSChainee t);
+ListeDChainee suppOccurenceDC(ListeDChainee t);
 void affichageSC(ListeSChainee t);
+void affichageDC(ListeDChainee t);
 void affichageSCC(ListeSChaineeC t);
+void affichageDCC(ListeDChaineeC t);
 ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t);
+ListeDChaineeC ajoutTeteDCC(ListeDChaineeC t);
 ListeSChaineeC ajoutQueueSCC(ListeSChaineeC t);
+ListeDChaineeC ajoutQueueDCC(ListeDChaineeC t);
 
 
 #endif

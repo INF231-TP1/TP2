@@ -158,6 +158,19 @@ void affichageSCC(ListeSChaineeC t){
 	}
 }
 
+void affichageDCC(ListeDChaineeC t){
+	ListeDChaineeC l=t;
+	if(l==NULL){
+		printf("Liste vide\n");
+	}else{
+		while(l->indice > l->next->indice){
+			printf("\"%d\"  ",l->val);
+			l = l->next;
+		}
+        printf("\"%d\" ",l->val);
+	}
+}
+
 ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t){
     int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
     ListeSChaineeC l = t;
@@ -170,10 +183,42 @@ ListeSChaineeC ajoutTeteSCC(ListeSChaineeC t){
     }
     while(l->indice > l->next->indice){
         if(l->next->indice < l->next->next->indice){
+            ListeSChaineeC p = l->next->next;
             m->indice = l->next->next->indice + 1;
             m->val = v;
-            m->next = l->next->next;
             l->next->next = m;
+            m->next = p;
+            return t;
+        }
+        l = l->next;
+    }
+    m->indice = 2;
+    m->val = v;
+    m->next = l;
+    l->next = m;
+    return t;
+}
+
+ListeDChaineeC ajoutTeteDCC(ListeDChaineeC t){
+    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
+    ListeDChaineeC l = t;
+    ListeDChaineeC m = (ListeDChaineeC) malloc (sizeof(ListeDChaineeC));
+    if(l == NULL){
+        m->indice = 1;
+        m->prev = NULL;
+        m->val = v;
+        m->next = m;
+        return m;
+    }
+    while(l->indice > l->next->indice){
+        if(l->next->indice < l->next->next->indice){
+            ListeDChaineeC p = l->next->next;
+            m->indice = l->next->next->indice + 1;
+            m->val = v;
+            l->next->next = m;
+            p->prev = m;
+            m->prev = l->next;
+            m->next = p;
             return t;
         }
         l = l->next;
@@ -199,6 +244,36 @@ ListeSChaineeC ajoutQueueSCC(ListeSChaineeC t){
         if(l->next->indice < l->next->next->indice){
             m->indice = l->next->indice - 1;
             m->val = v;
+            m->next = l->next->next;
+            l->next->next = m;
+            return t;
+        }
+        l = l->next;
+    }
+    m->indice = 0;
+    m->val = v;
+    m->next = l;
+    l->next = m;
+    return t;
+}
+
+ListeDChaineeC ajoutQueueDCC(ListeDChaineeC t){
+    int v = lireEntier("Entrez l'entier à ajouter", 0, MAX);
+    ListeDChaineeC l = t;
+    ListeDChaineeC m = (ListeDChaineeC) malloc (sizeof(ListeDChaineeC));
+    if(l == NULL){
+        m->indice = 1;
+        m->val = v;
+        m->prev = NULL;
+        m->next = m;
+        return m;
+    }
+    while(l->indice > l->next->indice){
+        if(l->next->indice < l->next->next->indice){
+            m->indice = l->next->indice - 1;
+            m->val = v;
+            l->next->next->prev = m;
+            m->prev = l->next;
             m->next = l->next->next;
             l->next->next = m;
             return t;
