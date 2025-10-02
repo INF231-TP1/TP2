@@ -4,6 +4,7 @@
 #include "tp2.h"
 
 int main() {
+    
     printf("\t\tBIENVENUE DANS LE MENU PRINCIPAL\n");
     char input[100];
     char n;
